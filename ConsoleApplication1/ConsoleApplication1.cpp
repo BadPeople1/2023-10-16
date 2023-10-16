@@ -31,6 +31,35 @@ bool InsertAfter(listnode* p, int value)
     return true;
 }
 
+listnode* GetPreNode(listnode* head, listnode* OldNode)
+{
+    listnode* p, * q;
+    p = head;
+    q = head->next;
+    while ((q != NULL) && (q != OldNode))
+    {
+        p = q;
+        q = q->next;
+    }
+    if (q != NULL)
+        return p;
+    else
+        return NULL;
+}
+
+bool DeleteNode(listnode* head, listnode* OldNode)
+{
+    listnode* PreNode;
+    if (head == OldNode)
+        return false;
+    PreNode = GetPreNode(head, OldNode);
+    if (PreNode == NULL)
+        return false;
+    PreNode->next = OldNode->next;
+    delete OldNode;
+    return true;
+}
+
 int main()
 {
     NODE* listA;
@@ -55,6 +84,8 @@ int main()
 
     InsertAfter(listB->next->next, 25);
     ListTraverse(listB);
+
+    DeleteNode(listB, listB->next->next->next);
 }
 
 // 執行程式: Ctrl + F5 或 [偵錯] > [啟動但不偵錯] 功能表
